@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  oauth_server:
+    ports:
+      - "8080:80"
+      - "18080:18080"
+    command: "dlv debug --headless --listen=:18080 --api-version=2"
+
+  oauth_consumer:
+    ports:
+      - "9080:80"
+      - "19080:19080"
+    command: "dlv debug --headless --listen=:19080 --api-version=2"
+
+  resource_provider:
+    ports:
+      - "7080:80"
+      - "17080:17080"
+    command: "dlv debug --headless --listen=:17080 --api-version=2"

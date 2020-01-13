@@ -1,0 +1,104 @@
+version: '3'
+
+services:
+  oauth_server:
+    build:
+      dockerfile: build/Dockerfile
+      context: oauth_server
+    image: oauth_server
+    ports:
+      - "8080:80"
+    volumes:
+      - "./oauth_server:/app"
+    command: air
+    entrypoint: /usr/bin/wait-for-it.sh oauth_server_db:5432 -t 60 --
+    environment:
+      OAUTH_DB: postgres://server_db:server_db@oauth_server_db:5432/server_db?sslmode=disable
+      OAUTH_SESSION_KEY: test
+    depends_on:
+      - oauth_server_db
+
+  oauth_server_bootstrap:
+    image: oauth_server
+    command: >
+      bash -c "go run main.go clients create --id test --secret test --redirectURI http://localhost:9080/oauth/callback/internal &&
+      go run main.go users create --email test@test.test --password test"
+    entrypoint: /usr/bin/wait-for-it.sh oauth_server_db:5432 -t 60 --
+    environment:
+      OAUTH_DB: postgres://server_db:server_db@oauth_server_db:5432/server_db?sslmode=disable
+      OAUTH_SESSION_KEY: test
+    depends_on:
+      - oauth_server_db
+
+  oauth_server_db:
+    image: postgres:11-alpine
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: server_db
+      POSTGRES_USER: server_db
+      POSTGRES_PASSWORD: server_db
+    volumes:
+      - oauth_server_data:/var/lib/postgresql/data
+    ports:
+      - "8432:5432"
+
+  oauth_consumer:
+    build:
+      dockerfile: build/Dockerfile
+      context: oauth_consumer
+    ports:
+      - "9080:80"
+    volumes:
+      - "./oauth_consumer:/app"
+    command: air
+    env_file:
+      - "./oauth_consumer/.env"
+    environment:
+      SESSION_KEY: test
+      RESOURCE_PROVIDER_URL: http://resource_provider
+      APP_HOST: http://localhost:9080
+      OAUTH_INTERNAL_SERVER_CLIENT_ID: test
+      OAUTH_INTERNAL_SERVER_CLIENT_SECRET: test
+      OAUTH_INTERNAL_SERVER_AUTH_URL: http://localhost:8080/authorize
+      # this is called directly from consumer thus has to be dockerized image name instead of localhost.
+      OAUTH_INTERNAL_SERVER_TOKEN_URL: http://oauth_server/token
+      OAUTH_INTERNAL_SERVER_USER_DATA_URL: http://oauth_server/user
+
+      GITHUB_USER_DATA_URL: https://api.github.com/user
+
+  resource_provider:
+    build:
+      dockerfile: build/Dockerfile
+      context: resource_provider
+    ports:
+      - "7080:80"
+    volumes:
+      - "./resource_provider:/app"
+    command: air
+    entrypoint: /usr/bin/wait-for-it.sh resource_provider_db:5432 -t 60 --
+    env_file:
+      - resource_provider/.env
+    environment:
+      DB: postgres://resource_db:resource_db@resource_provider_db:5432/resource_db?sslmode=disable
+      OAUTH_INTERNAL_SERVER_VALIDATE_TOKEN_URL: http://oauth_server/validate
+      OAUTH_INTERNAL_SERVER_VALIDATE_CLIENT_ID: test
+      OAUTH_INTERNAL_SERVER_VALIDATE_CLIENT_SECRET: test
+      OAUTH_GITHUB_VALIDATE_TOKEN_URL: https://api.github.com/user
+
+  resource_provider_db:
+    image: postgres:11-alpine
+    environment:
+      PGDATA: /var/lib/postgresql/data
+      POSTGRES_DB: resource_db
+      POSTGRES_USER: resource_db
+      POSTGRES_PASSWORD: resource_db
+    volumes:
+      - resource_provider_data:/var/lib/postgresql/data
+    ports:
+      - "7432:5432"
+
+volumes:
+  oauth_server_data:
+    driver: local
+  resource_provider_data:
+    driver: local

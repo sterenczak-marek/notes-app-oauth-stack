@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>Notes App</title>
+
+	<!-- Custom fonts for this template-->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css"
+		  integrity="sha256-+N4/V/SbAFiW1MPBCXnfnP9QSN3+Keu+NlB+0ev/YKQ=" crossorigin="anonymous"/>
+	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+		  rel="stylesheet">
+
+	<!-- Custom styles for this template-->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.0.7/css/sb-admin-2.min.css"
+		  integrity="sha256-vXEn7qVQ1XquIG0j14MmJDno8qYD64JTdmNFmTG4Auw=" crossorigin="anonymous">
+</head>
+
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+	<!-- Sidebar -->
+	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+		<!-- Sidebar - Brand -->
+		<a class="sidebar-brand d-flex align-items-center justify-content-center" href="/">
+			<div class="sidebar-brand-icon rotate-n-15">
+				<i class="fas fa-laugh-wink"></i>
+			</div>
+			<div class="sidebar-brand-text mx-3">Notes app</div>
+		</a>
+
+		<!-- Divider -->
+		<hr class="sidebar-divider my-0">
+
+		<!-- Nav Item - Dashboard -->
+		<li class="nav-item active">
+			<a class="nav-link" href="/">
+				<i class="fas fa-fw fa-tachometer-alt"></i>
+				<span>My notes</span></a>
+		</li>
+
+		<!-- Divider -->
+		<hr class="sidebar-divider">
+
+		<!-- Sidebar Toggler (Sidebar) -->
+		<div class="text-center d-none d-md-inline">
+			<button class="rounded-circle border-0" id="sidebarToggle"></button>
+		</div>
+
+	</ul>
+	<!-- End of Sidebar -->
+
+	<!-- Content Wrapper -->
+	<div id="content-wrapper" class="d-flex flex-column">
+
+		<!-- Main Content -->
+		<div id="content">
+
+			<!-- Topbar -->
+			<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+				<!-- Sidebar Toggle (Topbar) -->
+				<button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+					<i class="fa fa-bars"></i>
+				</button>
+
+				<!-- Topbar Navbar -->
+				<ul class="navbar-nav ml-auto">
+
+					<div class="topbar-divider d-none d-sm-block"></div>
+
+					<!-- Nav Item - User Information -->
+					<li class="nav-item dropdown no-arrow">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+						   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+							<span class="mr-2 d-none d-lg-inline text-gray-600 small">{{.Email}}</span>
+						</a>
+						<!-- Dropdown - User Information -->
+						<div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+							 aria-labelledby="userDropdown">
+							<a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+								<i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+								Logout
+							</a>
+						</div>
+					</li>
+
+				</ul>
+
+			</nav>
+			<!-- End of Topbar -->
+
+			<!-- Begin Page Content -->
+			<div class="container-fluid">
+
+				<!-- Page Heading -->
+				<div class="d-sm-flex align-items-center mb-4">
+					<h1 class="h3 mb-0 text-gray-800">My notes</h1>
+					<button class="btn btn-success btn-circle ml-3" onclick="app.Add()">
+						<i class="fas fa-plus"></i>
+					</button>
+				</div>
+
+				<!-- Content Row -->
+				<div class="row" id="notes-container"></div>
+
+				<div class="col-lg-6 mb-4 d-none note" id="empty-note">
+					<div class="card shadow mb-4 note-body">
+						<form class="note-form">
+							<div class="card-header py-3">
+								<h6 class="card-title pt-2 font-weight-bold text-primary">
+									<input type="text" name="title" autocomplete="off" placeholder="title"
+										   class="form-control note-title">
+								</h6>
+							</div>
+							<div class="card-body">
+								<textarea name="text" placeholder="text" class="form-control note-text"></textarea>
+							</div>
+							<div class="card-footer text-right">
+								<button class="btn btn-danger btn-circle note-cancel">
+									<i class="fas fa-times"></i>
+								</button>
+								<button type="submit" class="btn btn-success btn-circle">
+									<i class="fas fa-check"></i>
+								</button>
+							</div>
+						</form>
+
+						<div class="note-content">
+							<div class="card-header py-3 d-flex justify-content-sm-between">
+								<h6 class="card-title pt-2 font-weight-bold text-primary note-title"></h6>
+								<div class="card-tools">
+									<button class="btn btn-sm btn-circle btn-primary note-edit">
+										<i class="fas fa-pencil-alt"></i>
+									</button>
+									<button class="btn btn-sm btn-circle btn-danger note-delete">
+										<i class="fas fa-times"></i>
+									</button>
+								</div>
+							</div>
+							<div class="card-body note-text"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+
+
+		</div>
+		<!-- End of Main Content -->
+
+		<!-- Footer -->
+		<footer class="sticky-footer bg-white">
+			<div class="container my-auto">
+				<div class="copyright text-center my-auto">
+					<span>Copyright &copy; Your Website 2020</span>
+				</div>
+			</div>
+		</footer>
+		<!-- End of Footer -->
+
+	</div>
+	<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+	<i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	 aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+				<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">×</span>
+				</button>
+			</div>
+			<div class="modal-body">Are you sure to be logged out from the application?</div>
+			<div class="modal-footer">
+				<button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+				<a class="btn btn-primary" href="/logout">Logout</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- Bootstrap core JavaScript-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.js"
+		integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/js/bootstrap.bundle.min.js"
+		integrity="sha256-OUFW7hFO0/r5aEGTQOz9F/aXQOt+TwqI1Z4fbVvww04=" crossorigin="anonymous"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="https://cdn.jsdelivr.net/npm/startbootstrap-sb-admin-2@4.0.7/js/sb-admin-2.min.js"
+		integrity="sha256-tCfY819ixSSCdfJ1UH/P8fV9/PdD2aldEgg6Te0HaOU=" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+
+	let app = new function () {
+
+		function getFormData($form) {
+			let unindexed_array = $form.serializeArray(),
+					indexed_array = {};
+
+			$.map(unindexed_array, function (n, i) {
+				indexed_array[n['name']] = n['value'];
+			});
+
+			return JSON.stringify(indexed_array);
+		}
+
+		function displayForm($note) {
+			$note.find('.note-form').show();
+			$note.find('.note-content').hide();
+		}
+
+		function displayContent($note) {
+			$note.find('.note-form').hide();
+			$note.find('.note-content').show();
+		}
+
+		function createNoteItem(type) {
+			let $newItem = $("#empty-note").clone().removeAttr("id").removeClass("d-none");
+			$newItem.prependTo(
+					$("#notes-container")
+			);
+
+			$newItem.find(".note-cancel").click(function (e) {
+				e.preventDefault();
+				let $note = $(this).parents(".note"),
+						uuid = $note.data("uuid");
+
+				if (uuid) {
+					displayContent($note);
+				} else {
+					$note.remove();
+				}
+			});
+
+			$newItem.find(".note-edit").click(function () {
+				let $note = $(this).parents(".note");
+				displayForm($note);
+
+				$note.find("input.note-title").val(
+						$note.find("h6.note-title").text()
+				);
+				$note.find("textarea.note-text").val(
+						$note.find("div.note-text").text()
+				);
+			});
+
+			$newItem.find(".note-delete").click(function () {
+				let $note = $(this).parents(".note");
+				app.DeleteNote($note);
+			});
+
+			$newItem.find("form.note-form").submit(function (e) {
+				e.preventDefault();
+				let data = getFormData($(this)),
+						$note = $(this).parents(".note"),
+						uuid = $note.data("uuid"),
+						method = "POST",
+						url = "/notes";
+
+				if (uuid) {
+					method = "PATCH";
+					url += "/" + uuid;
+				}
+
+				$.ajax({
+					url: url,
+					data: data,
+					contentType: "application/json",
+					type: method,
+					success: function (savedData) {
+						displayContent($note);
+						$note.find(".note-title").text(savedData["title"]);
+						$note.find(".note-text").text(savedData["text"]);
+					},
+					error: function (xhr, msg, err) {
+						alert(msg["error"]);
+					}
+				});
+			});
+
+			if (type === "form") {
+				displayForm($newItem);
+			} else {
+				displayContent($newItem);
+			}
+
+			return $newItem
+		}
+
+		this.Add = function () {
+			createNoteItem("form");
+		};
+
+		this.FetchAll = function () {
+			$.ajax({
+				url: "/notes",
+				type: "GET",
+				success: function (notes) {
+					notes.forEach(function (item) {
+						let $newItem = createNoteItem("content");
+
+						$newItem.find("h6.note-title").text(item["title"]);
+						$newItem.find("div.note-text").text(item["text"]);
+						$newItem.data("uuid", item["uuid"]);
+					});
+				},
+				error: function (xhr, msg, err) {
+					alert(msg["error"]);
+				}
+			});
+		};
+
+		this.DeleteNote = function ($item) {
+			let uuid = $item.data('uuid');
+			$.ajax({
+				url: "/notes/" + uuid,
+				type: "DELETE",
+				success: function () {
+					$item.remove()
+				},
+				error: function (xhr, msg) {
+					alert(msg["error"]);
+				}
+			});
+		}
+	};
+
+	app.FetchAll();
+
+</script>
+
+</body>
+
+</html>

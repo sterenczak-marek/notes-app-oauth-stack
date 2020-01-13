@@ -1,0 +1,8 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Debug app" type="CompoundRunConfigurationType">
+    <toRun name="Debug OAuth server" type="GoRemoteDebugConfigurationType" />
+    <toRun name="Debug Resource provider" type="GoRemoteDebugConfigurationType" />
+    <toRun name="Debug OAuth consumer" type="GoRemoteDebugConfigurationType" />
+    <method v="2" />
+  </configuration>
+</component>

@@ -1,0 +1,5 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Debug OAuth consumer" type="GoRemoteDebugConfigurationType" factoryName="Go Remote" port="19080">
+    <method v="2" />
+  </configuration>
+</component>
