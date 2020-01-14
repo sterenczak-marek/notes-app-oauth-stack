@@ -11,11 +11,11 @@ import (
 func IndexPageHandler(rw http.ResponseWriter, req *http.Request) {
 	user := internal.MustGetUserFromContext(req.Context())
 
-	internal.ResponseHTML(rw, "templates/index.html", user)
+	internal.ResponseHTML(rw, "index.html", user)
 }
 
 func LoginPageHandler(rw http.ResponseWriter, _ *http.Request) {
-	internal.ResponseHTML(rw, "templates/login.html", nil)
+	internal.ResponseHTML(rw, "login.html", nil)
 }
 
 func LogoutPageHandler(rw http.ResponseWriter, req *http.Request) {

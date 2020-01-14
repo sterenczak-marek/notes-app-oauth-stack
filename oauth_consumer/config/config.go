@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"os"
 
+	"github.com/gobuffalo/packr/v2"
 	"github.com/gorilla/sessions"
 	_ "github.com/lib/pq"
 )
@@ -12,6 +13,7 @@ import (
 var (
 	SessionStore        *sessions.CookieStore
 	ResourceProviderURL *url.URL
+	HTMLTemplateBox     = packr.New("htmlTemplates", "../templates")
 )
 
 const CookieSessionKey = "consumer-app-session"

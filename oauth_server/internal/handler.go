@@ -70,7 +70,7 @@ func loginHandler(rw http.ResponseWriter, req *http.Request) {
 		}
 		data["errors"] = []string{err.Error()}
 	}
-	responseHTML(rw, "templates/login.html", data)
+	responseHTML(rw, "login.html", data)
 }
 
 func authHandler(rw http.ResponseWriter, req *http.Request) {
@@ -111,7 +111,7 @@ func authHandler(rw http.ResponseWriter, req *http.Request) {
 		}
 		return
 	}
-	responseHTML(rw, "templates/auth.html", data)
+	responseHTML(rw, "auth.html", data)
 }
 
 func validateTokenHandler(rw http.ResponseWriter, req *http.Request) {

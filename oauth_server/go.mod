@@ -2,6 +2,7 @@ module github.com/sterenczak-marek/notes-app-oauth-stack/oauth_server
 
 require (
 	github.com/antonlindstrom/pgstore v0.0.0-20170604072116-a407030ba6d0
+	github.com/gobuffalo/packr/v2 v2.7.1
 	github.com/gofrs/uuid v3.2.0+incompatible // indirect
 	github.com/google/uuid v1.1.1
 	github.com/gorilla/mux v1.6.2

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/antonlindstrom/pgstore"
+	"github.com/gobuffalo/packr/v2"
 	"github.com/jackc/pgx"
 	"github.com/jinzhu/gorm"
 	pg "github.com/vgarvardt/go-oauth2-pg"
@@ -28,6 +29,8 @@ var (
 	SessionStore *pgstore.PGStore
 
 	GormDB *gorm.DB
+
+	HTMLTemplateBox = packr.New("htmlTemplates", "../templates")
 
 	// helper variables
 	db      *sql.DB
